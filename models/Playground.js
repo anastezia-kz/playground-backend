@@ -1,0 +1,15 @@
+const mongoose = require('mongoose');
+const Schema   = mongoose.Schema;
+
+const PGSchema = new Schema({
+  address:String,
+  photo:String,
+  attributes:{
+    slide:Boolean,
+    swing:Boolean,
+    rollerBungge:Boolean
+  }
+});
+
+const PG = mongoose.model('PG', PGSchema);
+module.exports = PG;
