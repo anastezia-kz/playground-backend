@@ -27,11 +27,11 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 const app = express();
 
-// Middleware Setup
-// app.use(cors({
-//   origin: ['http://localhost:3000'],
-//   credentials: true
-// }))
+
+app.use(cors({
+  origin: ['http://localhost:3001'],
+  credentials: true
+}))
 
 
 app.use(logger('dev'));
@@ -85,6 +85,8 @@ app.use('/', index);
 
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
-      
+
+const PGRoutes = require('./routes/playground');
+app.use('/playground', PGRoutes)
 
 module.exports = app;
