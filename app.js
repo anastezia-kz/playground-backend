@@ -29,7 +29,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ['http://localhost:3001'],
+  origin: ['http://localhost:3000'],
   credentials: true
 }))
 
@@ -87,6 +87,7 @@ const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
 const PGRoutes = require('./routes/playground');
-app.use('/playground', PGRoutes)
+app.use('/playground', PGRoutes);
+
 
 module.exports = app;

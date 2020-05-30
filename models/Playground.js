@@ -8,6 +8,10 @@ const PGSchema = new Schema({
     slide:Boolean,
     swing:Boolean,
     rollerBungge:Boolean
+  },
+  approved:{
+    type: Boolean,
+    default:false
   }
 });
 
