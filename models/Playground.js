@@ -3,7 +3,7 @@ const Schema   = mongoose.Schema;
 
 const PGSchema = new Schema({
   address:String,
-  photo:String,
+  photo:Array,
   attributes:{
     slide:Boolean,
     swing:Boolean,

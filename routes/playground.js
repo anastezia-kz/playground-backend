@@ -14,7 +14,7 @@ const uploader = new Multer({
     s3: s3,
     bucket: 'starbookbucket',
     acl: 'public-read',
-    key: function(req, file, cb) {
+    key: function(req, files, cb) {
       cb(null, Date.now().toString())
     }
   })
@@ -22,14 +22,17 @@ const uploader = new Multer({
 .array('photo')
 
 router.post('/addPG',ensureLogin('/auth/login'),uploader,(req,res) => {
-  console.log({'body': req.body});
+  const photoTittles = []
+  req.files.forEach(photo => {
+    photoTittles.push(photo.location)
+  })
   const newPG = new PG({
     address:req.body.address,
-    photo: req.file && req.file.location,
+    photo:photoTittles,
     attributes:{
       slide:req.body.slide,
       swing:req.body.swing,
-      rollerBungge:req.body.ollerBungge
+      rollerBungge:req.body.rollerBungge
     }
   });
 
