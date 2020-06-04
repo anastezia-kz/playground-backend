@@ -7,7 +7,10 @@ const PGSchema = new Schema({
   attributes:{
     slide:Boolean,
     swing:Boolean,
-    rollerBungge:Boolean
+    rollerBungge:Boolean,
+    sander:Boolean,
+    toilet: Boolean,
+
   },
   approved:{
     type: Boolean,
