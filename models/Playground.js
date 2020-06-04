@@ -5,9 +5,18 @@ const PGSchema = new Schema({
   address:String,
   photo:Array,
   attributes:{
-    slide:Boolean,
-    swing:Boolean,
-    rollerBungge:Boolean
+    slide:{
+      type:Boolean,
+      default:false
+    },
+    swing:{
+      type:Boolean,
+      default:false
+    },
+    rollerBungge:{
+      type:Boolean,
+      default:false
+    }
   },
   approved:{
     type: Boolean,
