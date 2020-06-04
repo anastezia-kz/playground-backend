@@ -16,6 +16,14 @@ const PGSchema = new Schema({
     rollerBungge:{
       type:Boolean,
       default:false
+    },
+    sander:{
+      type:Boolean,
+      default:false
+    },
+    toilet:{
+      type:Boolean,
+      default:false
     }
   },
   approved:{
