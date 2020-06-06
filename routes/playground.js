@@ -56,6 +56,15 @@ router.get('/admin',  (req,res) =>{
   }) 
 } )
 
+router.get('/approvedPlaygrounds',  (req,res) =>{
+  PG.find({ "approved": true })
+  .then(PG => {
+    res.status(200).json({PG})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  }) 
+} )
 
 
 router.get('/approvedPlaygrounds',  (req,res) => {
@@ -70,5 +79,25 @@ router.get('/approvedPlaygrounds',  (req,res) => {
 
 
 
+router.get('/admin/filter', (req,res) => {
+  if (req.query.filterApproved === "all") {
+    PG.find()
+    .then(PG => {
+      res.status(200).json({PG})
+    })
+    .catch(() => {
+      res.status(404).json({message: "Something went wrong" })
+    })
+  } else {
+    let filter = { "approved": req.query.filterApproved }
+    PG.find( filter )
+    .then(PG => {
+      res.status(200).json({PG})
+    })
+    .catch(() => {
+      res.status(404).json({message: "Something went wrong" })
+    })
+  }
+})
 
 module.exports =router;

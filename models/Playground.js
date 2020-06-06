@@ -6,12 +6,26 @@ const PGSchema = new Schema({
   photo:Array,
   coordinates:Number,
   attributes:{
-    slide:Boolean,
-    swing:Boolean,
-    rollerBungge:Boolean,
-    sander:Boolean,
-    toilet: Boolean,
-
+    slide:{
+      type:Boolean,
+      default:false
+    },
+    swing:{
+      type:Boolean,
+      default:false
+    },
+    rollerBungge:{
+      type:Boolean,
+      default:false
+    },
+    sander:{
+      type:Boolean,
+      default:false
+    },
+    toilet:{
+      type:Boolean,
+      default:false
+    }
   },
   approved:{
     type: Boolean,
