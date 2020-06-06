@@ -58,6 +58,17 @@ router.get('/admin',  (req,res) =>{
 
 
 
+router.get('/approvedPlaygrounds',  (req,res) => {
+  PG.find({ "approved": true })
+  .then(PG => {
+    res.status(200).json({PG})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+} )
+
+
 
 
 module.exports =router;
