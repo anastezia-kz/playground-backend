@@ -93,10 +93,8 @@ router.get('/admin/edit/:id', (req,res) =>{
   
   PG.findById(req.params.id)
   .then(PG => {
-    const {address}= PG
-    const {lat, lng} = PG.coordinates
-    const {slide, swing, rollerBungge} = PG.attributes
-    res.status(200).json({address, lat,lng, slide, swing, rollerBungge})
+    const {address, coordinates, attributes}= PG
+    res.status(200).json({address, coordinates, attributes})
   })
   .catch(() => {
     res.status(404).json({message: "Something went wrong" })
@@ -104,9 +102,9 @@ router.get('/admin/edit/:id', (req,res) =>{
 })
 
 router.post('/admin/edit/:id', (req,res) => {
-  const {address, lat, lng,  slide, swing, rollerBungge} = req.body
+  const {address, coordinates, attributes} = req.body
   PG.findByIdAndUpdate(
-    {_id:req.params.id}, {address, coordinates:{lat, lng}, attributes:{slide, swing, rollerBungge}},{new:true}
+    {_id:req.params.id}, {address, coordinates, attributes},{new:true}
   )
   .then(PG => {
     res.status(200).json({PG})
