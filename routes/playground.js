@@ -27,6 +27,7 @@ router.post('/addPG',ensureLogin('/auth/login'),uploader,(req,res) => {
     photoTittles.push(photo.location)
   })
   const newPG = new PG({
+    coordinates:req.body.coordinates,
     address:req.body.address,
     photo:photoTittles,
     attributes:{
@@ -67,18 +68,6 @@ router.get('/approvedPlaygrounds',  (req,res) =>{
 } )
 
 
-router.get('/approvedPlaygrounds',  (req,res) => {
-  PG.find({ "approved": true })
-  .then(PG => {
-    res.status(200).json({PG})
-  })
-  .catch(() => {
-    res.status(404).json({message: "Something went wrong" })
-  })
-} )
-
-
-
 router.get('/admin/filter', (req,res) => {
   if (req.query.filterApproved === "all") {
     PG.find()
@@ -100,4 +89,31 @@ router.get('/admin/filter', (req,res) => {
   }
 })
 
+router.get('/admin/edit/:id', (req,res) =>{
+  
+  PG.findById(req.params.id)
+  .then(PG => {
+    const {address}= PG
+    const {lat, lng} = PG.coordinates
+    const {slide, swing, rollerBungge} = PG.attributes
+    res.status(200).json({address, lat,lng, slide, swing, rollerBungge})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+})
+
+router.post('/admin/edit/:id', (req,res) => {
+  const {address, lat, lng,  slide, swing, rollerBungge} = req.body
+  PG.findByIdAndUpdate(
+    {_id:req.params.id}, {address, coordinates:{lat, lng}, attributes:{slide, swing, rollerBungge}},{new:true}
+  )
+  .then(PG => {
+    res.status(200).json({PG})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+  res.status(200).json({})
+})
 module.exports =router;

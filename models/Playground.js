@@ -4,7 +4,10 @@ const Schema   = mongoose.Schema;
 const PGSchema = new Schema({
   address:String,
   photo:Array,
-  coordinates:Number,
+  coordinates:{
+    lat:Number,
+    lng:Number
+  },
   attributes:{
     slide:{
       type:Boolean,
