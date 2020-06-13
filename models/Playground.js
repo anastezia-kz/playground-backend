@@ -28,6 +28,10 @@ const PGSchema = new Schema({
     toilet:{
       type:Boolean,
       default:false
+    },
+    pitch:{
+      type:Boolean,
+      default:false
     }
   },
   approved:{
