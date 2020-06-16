@@ -22,22 +22,32 @@ const uploader = new Multer({
 .array('photo')
 
 router.post('/addPG',ensureLogin('/auth/login'),uploader,(req,res) => {
+  //console.log(+req.body.lat)
   const photoTittles = []
   req.files.forEach(photo => {
     photoTittles.push(photo.location)
   })
   const newPG = new PG({
+    coordinates:{
+      lat:+req.body.lat,
+      lng:+req.body.lng
+    },
     address:req.body.address,
     photo:photoTittles,
     attributes:{
       slide:req.body.slide,
       swing:req.body.swing,
-      rollerBungge:req.body.rollerBungge
+      rollerBungge:req.body.rollerBungge,
+      sander:req.body.sander,
+      toilet:req.body.toilet,
+      pitch:req.body.pitch
+
     }
   });
 
   newPG.save()
   .then(PG => {
+    
     res.status(200).json({PG})
   })
   .catch(() => {
@@ -56,6 +66,7 @@ router.get('/admin',  (req,res) =>{
   }) 
 } )
 
+
 router.get('/approvedPlaygrounds',  (req,res) =>{
   PG.find({ "approved": true })
   .then(PG => {
@@ -65,18 +76,6 @@ router.get('/approvedPlaygrounds',  (req,res) =>{
     res.status(404).json({message: "Something went wrong" })
   }) 
 } )
-
-
-router.get('/approvedPlaygrounds',  (req,res) => {
-  PG.find({ "approved": true })
-  .then(PG => {
-    res.status(200).json({PG})
-  })
-  .catch(() => {
-    res.status(404).json({message: "Something went wrong" })
-  })
-} )
-
 
 
 router.get('/admin/filter', (req,res) => {
@@ -98,6 +97,44 @@ router.get('/admin/filter', (req,res) => {
       res.status(404).json({message: "Something went wrong" })
     })
   }
+})
+
+router.get('/admin/edit/:id', (req,res) =>{
+  
+  PG.findById(req.params.id)
+  .then(PG => {
+    //console.log(photoTittles)
+    const {photo, address, coordinates, attributes, approved}= PG
+    res.status(200).json({photo, address, coordinates, attributes, approved})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+})
+
+router.post('/admin/edit/:id', (req,res) => {
+  const {address, coordinates, attributes,approved} = req.body
+  PG.findByIdAndUpdate(
+    {_id:req.params.id}, {address, coordinates, attributes,approved},{new:true}
+  )
+  .then(PG => {
+    res.status(200).json({PG})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+  res.status(200).json({})
+})
+
+
+router.get('/deletePG/:id' , (req,res) => {
+  PG.deleteOne( {_id:req.params.id})
+  .then( (PG) => {
+    res.status(200).json({PG})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
 })
 
 module.exports =router;
