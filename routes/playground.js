@@ -27,31 +27,36 @@ router.post('/addPG',ensureLogin('/auth/login'),uploader,(req,res) => {
   req.files.forEach(photo => {
     photoTittles.push(photo.location)
   })
-  const newPG = new PG({
-    coordinates:{
-      lat:+req.body.lat,
-      lng:+req.body.lng
-    },
-    address:req.body.address,
-    photo:photoTittles,
-    attributes:{
-      slide:req.body.slide,
-      swing:req.body.swing,
-      rollerBungge:req.body.rollerBungge,
-      sander:req.body.sander,
-      toilet:req.body.toilet,
-      pitch:req.body.pitch
-
+  const playground =
+    {
+      address:req.body.address,
+      photo:photoTittles,
+      attributes:{
+        slide:req.body.slide,
+        swing:req.body.swing,
+        rollerBungge:req.body.rollerBungge,
+        sander:req.body.sander,
+        toilet:req.body.toilet,
+        pitch:req.body.pitch
+  
+      }
     }
-  });
+  if (req.body.lat&&req.body.lng) {
+    playground.coordinates={coordinates:{lat:req.body.lat,lng:req.body.lng}}
+  }
+  
+  const newPG = new PG(
+    playground
+  );
 
   newPG.save()
   .then(PG => {
     
     res.status(200).json({PG})
   })
-  .catch(() => {
-    res.status(404).json({message: "Something went wrong" })
+  .catch(error => {
+    console.log(error)
+    res.status(500).json({message: "Something went wrong" })
   }) 
 })
 
