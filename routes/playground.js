@@ -22,14 +22,14 @@ const uploader = new Multer({
 .array('photo')
 
 router.post('/addPG',ensureLogin('/auth/login'),uploader,(req,res) => {
-  //console.log(+req.body.lat)
+  console.log(req.body)
   const photoTittles = []
   req.files.forEach(photo => {
     photoTittles.push(photo.location)
   })
   const playground =
     {
-      address:req.body.address,
+      
       photo:photoTittles,
       attributes:{
         slide:req.body.slide,
@@ -42,7 +42,7 @@ router.post('/addPG',ensureLogin('/auth/login'),uploader,(req,res) => {
       }
     }
   if (req.body.lat&&req.body.lng) {
-    playground.coordinates={coordinates:{lat:req.body.lat,lng:req.body.lng}}
+    playground.coordinates={lat:req.body.lat,lng:req.body.lng}
   }
   
   const newPG = new PG(
@@ -109,8 +109,8 @@ router.get('/admin/edit/:id', (req,res) =>{
   PG.findById(req.params.id)
   .then(PG => {
     //console.log(photoTittles)
-    const {photo, address, coordinates, attributes, approved}= PG
-    res.status(200).json({photo, address, coordinates, attributes, approved})
+    const {photo, coordinates, attributes, approved}= PG
+    res.status(200).json({photo, coordinates, attributes, approved})
   })
   .catch(() => {
     res.status(404).json({message: "Something went wrong" })
@@ -118,9 +118,9 @@ router.get('/admin/edit/:id', (req,res) =>{
 })
 
 router.post('/admin/edit/:id', (req,res) => {
-  const {address, coordinates, attributes,approved} = req.body
+  const { coordinates, attributes,approved} = req.body
   PG.findByIdAndUpdate(
-    {_id:req.params.id}, {address, coordinates, attributes,approved},{new:true}
+    {_id:req.params.id}, { coordinates, attributes,approved},{new:true}
   )
   .then(PG => {
     res.status(200).json({PG})
