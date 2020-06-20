@@ -14,7 +14,8 @@ const flash      = require("connect-flash");
 const cors       = require('cors')    
 
 mongoose
-  .connect('mongodb://localhost/playground-backend', {useNewUrlParser: true})
+  .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
+  //'mongodb://localhost/playground-backend'
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -29,7 +30,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: [process.env.REACT_APP_BASE_URL],
   credentials: true
 }))
 
