@@ -131,6 +131,31 @@ router.post('/admin/edit/:id', (req,res) => {
   res.status(200).json({})
 })
 
+router.get('/ratePG/:id', (req,res) => {
+  PG.findById(req.params.id)
+  .then(PG => {
+    //console.log(photoTittles)
+    const {rating, photo, coordinates, attributes, approved}= PG
+    res.status(200).json({rating, photo, coordinates, attributes, approved})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+})
+
+router.post('/ratePG/:id', (req,res) => {
+  const { rating } = req.body
+  PG.findByIdAndUpdate(
+    {_id:req.params.id}, { rating },{new:true}
+  )
+  .then(PG => {
+    res.status(200).json({PG})
+  })
+  .catch(() => {
+    res.status(404).json({message: "Something went wrong" })
+  })
+  res.status(200).json({})
+})
 
 router.get('/deletePG/:id' , (req,res) => {
   PG.deleteOne( {_id:req.params.id})
